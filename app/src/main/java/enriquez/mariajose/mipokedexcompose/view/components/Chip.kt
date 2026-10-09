@@ -1,4 +1,4 @@
-package enriquez.mariajose.mipokedexcompose.components
+package enriquez.mariajose.mipokedexcompose.view.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,14 +13,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import enriquez.mariajose.mipokedexcompose.utilities.getColorByType
 
 @Composable
 fun NumberChip(
     texto: String,
-    modifier: Modifier = Modifier,
-    colors: Pair<Color, Color>
+    colors: Pair<Color, Color>,
+    modifier:Modifier = Modifier
 ) {
     Row(
         modifier
@@ -38,4 +40,10 @@ fun NumberChip(
             color = colors.second
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun previewChip(){
+    NumberChip("105",getColorByType("Dragon"))
 }

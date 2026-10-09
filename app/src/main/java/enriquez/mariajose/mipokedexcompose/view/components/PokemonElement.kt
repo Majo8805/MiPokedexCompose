@@ -1,38 +1,40 @@
-package enriquez.mariajose.mipokedexcompose.components
+package enriquez.mariajose.mipokedexcompose.view.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import enriquez.mariajose.mipokedexcompose.domain.Pokemon
-import enriquez.mariajose.mipokedexcompose.ui.theme.Green
+import enriquez.mariajose.mipokedexcompose.model.data.absol
+import enriquez.mariajose.mipokedexcompose.model.domain.Pokemon
 import enriquez.mariajose.mipokedexcompose.ui.theme.OffWhite
 import enriquez.mariajose.mipokedexcompose.ui.theme.Typography
 import enriquez.mariajose.mipokedexcompose.utilities.getColorByType
 
 @Composable
-fun PokemonRow(pokemon: Pokemon) {
+fun PokemonRow(pokemon: Pokemon, onNavigateToDetail: (Int) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { onNavigateToDetail(pokemon.number.toInt()) }
             .padding(10.dp)
     ) {
         Image(
@@ -80,13 +82,11 @@ fun PokemonRow(pokemon: Pokemon) {
 }
 
 @Composable
-fun FavoritePokemon(pokemon: Pokemon) {
-    Column(
-        modifier = Modifier
-            .padding(vertical = 15.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        val pokemonColors = getColorByType(pokemon.type)
+fun FavoritePokemon(pokemon: Pokemon, onNavigateToDetail: (Int) -> Unit) {
+    val pokemonColors = getColorByType(pokemon.type)
+    Column(Modifier.width(150.dp).padding(vertical = 15.dp)
+        .clickable(true, onClick = {onNavigateToDetail(pokemon.number as Int)})
+        , verticalArrangement = Arrangement.spacedBy(10.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Box() {
             Box(
                 modifier = Modifier
@@ -116,7 +116,9 @@ fun FavoritePokemon(pokemon: Pokemon) {
             NumberChip(
                 texto = pokemon.number.toString(),
                 colors = pokemonColors,
-                modifier = Modifier.align(Alignment.TopEnd)
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .offset(15.dp, 15.dp)
             )
         }
         Text(
@@ -127,21 +129,27 @@ fun FavoritePokemon(pokemon: Pokemon) {
 }
 
 @Composable
-fun PokemonCell(pokemon: Pokemon) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+fun PokemonCell(pokemon: Pokemon, onNavigateToDetail: (Int) -> Unit) {
+    val pokemonColors = getColorByType(pokemon.type)
+    Column(
+        Modifier.clickable(true, onClick = {onNavigateToDetail(pokemon.number as Int)}),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
         Box() {
             Image(
                 painter = painterResource(id = pokemon.image),
                 contentDescription = pokemon.name + " image",
                 modifier = Modifier
                     .size(150.dp)
-                    .padding(10.dp)
+                    .padding(10.dp),
+                contentScale = ContentScale.Fit
             )
-            val pokemonColors = getColorByType(pokemon.type)
             NumberChip(
                 texto = pokemon.number.toString(),
                 colors = pokemonColors,
-                modifier = Modifier.align(Alignment.TopEnd)
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .offset(10.dp, -10.dp)
             )
         }
         Text(
@@ -150,3 +158,9 @@ fun PokemonCell(pokemon: Pokemon) {
         )
     }
 }
+
+//@Preview(showBackground = true)
+//@Composable
+//fun PokemonElementPreview(){
+//    PokemonCell(absol)
+//}

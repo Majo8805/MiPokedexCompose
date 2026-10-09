@@ -1,4 +1,4 @@
-package enriquez.mariajose.mipokedexcompose.domain
+package enriquez.mariajose.mipokedexcompose.model.domain
 
 data class Pokemon(
     val name: String,

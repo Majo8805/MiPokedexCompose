@@ -1,4 +1,4 @@
-package enriquez.mariajose.mipokedexcompose.components
+package enriquez.mariajose.mipokedexcompose.view.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,37 +10,35 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import enriquez.mariajose.mipokedexcompose.domain.Pokemon
+import enriquez.mariajose.mipokedexcompose.model.domain.Pokemon
 import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import enriquez.mariajose.mipokedexcompose.model.data.pokemonList
+import enriquez.mariajose.mipokedexcompose.navigation.PokemonDetail
 
 @Composable
-fun MenuPokedex(
-    pokemonList: List<Pokemon>,
-    innerPadding: PaddingValues,
-    favoriteList: List<Pokemon>
-) {
+fun MenuPokedex(pokemonList: List<Pokemon>, onNavigateToDetail: (id: Int) -> Unit){
     LazyColumn() {
-        items(pokemonList) {
-            pokemon -> PokemonRow(pokemon)
+        items(pokemonList){ pokemon ->
+            PokemonRow(pokemon, onNavigateToDetail)
+
         }
     }
 }
 
 @Composable
-fun FavoritesRow(favoriteList: List<Pokemon>) {
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(15.dp)
-    ) {
-        items(favoriteList) {
-            pokemon -> FavoritePokemon(pokemon)
+fun FavoritesRow(favoritesList: List<Pokemon>, onNavigateToDetail: (id: Int) -> Unit){
+    LazyRow() {
+        items(favoritesList){pokemon ->
+            FavoritePokemon(pokemon, onNavigateToDetail)
+
         }
     }
 }
 
 @Composable
-fun PokedexGrid(pokemonList: List<Pokemon>) {
+fun PokedexGrid(pokemonList: List<Pokemon>, onNavigateToDetail: (id: Int) -> Unit) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         contentPadding = PaddingValues(5.dp, 20.dp),
@@ -49,13 +47,13 @@ fun PokedexGrid(pokemonList: List<Pokemon>) {
         modifier = Modifier.fillMaxSize()
     ) {
         items(pokemonList) {
-            pokemon -> PokemonCell(pokemon)
+            pokemon -> PokemonCell(pokemon, onNavigateToDetail)
         }
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun MenuPokedexPreview() {
-
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun MenuPokedexPreview() {
+//    PokedexGrid(pokemonList, onNavigateToDetail = PokemonDetail)
+//}
