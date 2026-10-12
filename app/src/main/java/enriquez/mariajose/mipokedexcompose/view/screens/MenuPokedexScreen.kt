@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -43,12 +44,18 @@ import enriquez.mariajose.mipokedexcompose.view.components.PokemonCell
 import enriquez.mariajose.mipokedexcompose.view.components.PokemonRow
 
 @Composable
-fun MenuPokedexScreen(innerPadding: PaddingValues, onNavigateToDetail: (id: Int) -> Unit) {
+fun MenuPokedexScreen(innerPadding: PaddingValues, onNavigateToDetail: (id: Int) -> Unit,
+                      onNavigateToHunt: ()-> Unit) {
     var grid by remember { mutableStateOf(false) }
 
     Column(Modifier.padding(innerPadding)) {
+        Row(modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically) { }
         Text(
             text = "Favorite Pokemon",
+            Button(onClick = {onNavigateToHunt}) {
+                Text("Catch New")
+            }
             modifier = Modifier.padding(start = 16.dp, top = 16.dp)
         )
         FavoritesRow(getFavoritePokemons(), onNavigateToDetail)
@@ -125,5 +132,5 @@ fun MenuPokedexScreen(innerPadding: PaddingValues, onNavigateToDetail: (id: Int)
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun MenuPokedexScreenPreview() {
-    MenuPokedexScreen(PaddingValues(10.dp, 15.dp), {})
+    MenuPokedexScreen(PaddingValues(10.dp, 15.dp), {}, onNavigateToHunt = {})
 }

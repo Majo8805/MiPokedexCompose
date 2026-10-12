@@ -18,6 +18,9 @@ fun MyApp(innerPadding: PaddingValues) {
         composable<PokemonList>{
             MenuPokedexScreen(innerPadding, onNavigateToDetail =
                 {id -> navController.navigate(route= PokemonDetail(id))
+                },
+                onNavigateToHunt =
+                    {navController.navigate(route = PokemonHunt)
                 })
         }
         composable<PokemonDetail>() { backStackEntry ->
