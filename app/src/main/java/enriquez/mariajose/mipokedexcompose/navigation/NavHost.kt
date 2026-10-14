@@ -10,15 +10,15 @@ import enriquez.mariajose.mipokedexcompose.model.data.getPokemonByNumber
 import enriquez.mariajose.mipokedexcompose.utilities.getColorByType
 import enriquez.mariajose.mipokedexcompose.view.screens.MenuPokedexScreen
 import enriquez.mariajose.mipokedexcompose.view.screens.PokemonDetailScreen
+import enriquez.mariajose.mipokedexcompose.view.screens.PokemonHuntScreen
 
 @Composable
 fun MyApp(innerPadding: PaddingValues) {
     val navController = rememberNavController()
+    val onNavigateToDetail ={id: Int -> navController.navigate(route = PokemonDetail(id))}
     NavHost(navController, startDestination = PokemonList){
         composable<PokemonList>{
-            MenuPokedexScreen(innerPadding, onNavigateToDetail =
-                {id -> navController.navigate(route= PokemonDetail(id))
-                },
+            MenuPokedexScreen(innerPadding, onNavigateToDetail = onNavigateToDetail,
                 onNavigateToHunt =
                     {navController.navigate(route = PokemonHunt)
                 })
@@ -29,6 +29,9 @@ fun MyApp(innerPadding: PaddingValues) {
             val pokemon = getPokemonByNumber(idPokemon)
             val pokemonColors = getColorByType(pokemon.type)
             PokemonDetailScreen(innerPadding, getPokemonByNumber(idPokemon), pokemonColors)
+        }
+        composable<PokemonHunt> {
+            PokemonHuntScreen(innerPadding, onNavigateToDetail = onNavigateToDetail)
         }
     }
 }

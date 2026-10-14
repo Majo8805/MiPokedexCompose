@@ -50,14 +50,17 @@ fun MenuPokedexScreen(innerPadding: PaddingValues, onNavigateToDetail: (id: Int)
 
     Column(Modifier.padding(innerPadding)) {
         Row(modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically) { }
-        Text(
-            text = "Favorite Pokemon",
-            Button(onClick = {onNavigateToHunt}) {
+            verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = "Favorite Pokemon",
+                modifier = Modifier.padding(start = 16.dp, top = 10.dp)
+            )
+            Button(onClick = {onNavigateToHunt()}, Modifier.padding(start = 100.dp)) {
                 Text("Catch New")
             }
-            modifier = Modifier.padding(start = 16.dp, top = 16.dp)
-        )
+
+        }
+
         FavoritesRow(getFavoritePokemons(), onNavigateToDetail)
 
         Spacer(Modifier.size(15.dp))
