@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import enriquez.mariajose.mipokedexcompose.model.data.getPokemonByNumber
 import enriquez.mariajose.mipokedexcompose.utilities.getColorByType
+import enriquez.mariajose.mipokedexcompose.view.screens.LoginScreen
 import enriquez.mariajose.mipokedexcompose.view.screens.MenuPokedexScreen
 import enriquez.mariajose.mipokedexcompose.view.screens.PokemonDetailScreen
 import enriquez.mariajose.mipokedexcompose.view.screens.PokemonHuntScreen
@@ -16,7 +17,13 @@ import enriquez.mariajose.mipokedexcompose.view.screens.PokemonHuntScreen
 fun MyApp(innerPadding: PaddingValues) {
     val navController = rememberNavController()
     val onNavigateToDetail ={id: Int -> navController.navigate(route = PokemonDetail(id))}
+    val onNavigateToMenu = {navController.navigate(PokemonList)}
+
     NavHost(navController, startDestination = PokemonList){
+        composable<Login> {
+            LoginScreen(innerPadding, onNavigateToMenu)
+        }
+
         composable<PokemonList>{
             MenuPokedexScreen(innerPadding, onNavigateToDetail = onNavigateToDetail,
                 onNavigateToHunt =
