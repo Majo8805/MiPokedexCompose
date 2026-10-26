@@ -41,6 +41,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import enriquez.mariajose.mipokedexcompose.model.data.Users
+import enriquez.mariajose.mipokedexcompose.model.domain.User
 import enriquez.mariajose.mipokedexcompose.model.preferences.ARCHIVO
 import enriquez.mariajose.mipokedexcompose.navigation.MyApp
 import enriquez.mariajose.mipokedexcompose.ui.theme.Blue
@@ -51,20 +53,21 @@ import enriquez.mariajose.mipokedexcompose.ui.theme.Pink
 import enriquez.mariajose.mipokedexcompose.ui.theme.Red
 import enriquez.mariajose.mipokedexcompose.ui.theme.White
 import enriquez.mariajose.mipokedexcompose.view.screens.LoginScreen
+import enriquez.mariajose.mipokedexcompose.viewModel.UserViewModel
 import java.nio.file.WatchEvent
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val users = Users(this)
+        val usersViewModel = UserViewModel(users)
         enableEdgeToEdge()
         setContent {
             MiPokedexComposeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                   // MyApp(innerPadding = innerPadding)
-                    LoginScreen(innerPadding, onNavigateToMenu = {})
+                    MyApp(innerPadding, usersViewModel)
                 }
             }
         }
-        val sharedP = getSharedPreferences(ARCHIVO, Context.MODE_PRIVATE)
     }
 }
