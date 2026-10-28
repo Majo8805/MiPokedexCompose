@@ -52,8 +52,8 @@ class Users(context: Context) {
         val username = shared.getString(USERNAME, null)
 
         if (user != null && username != null) {
-            return false
+            return true
         }
-        return true
+        return false
     }
 }

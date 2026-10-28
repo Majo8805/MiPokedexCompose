@@ -9,7 +9,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.TextObfuscationMode
 import androidx.compose.material3.Button
+import androidx.compose.material3.SecureTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -33,10 +36,10 @@ fun LoginScreen(
     viewModel: UserViewModel = viewModel()
 ) {
     var user by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf(value = "") }
+    var password = remember { TextFieldState() }
 
     if (viewModel.isLoggedIn()) {
-        onNavigateToMenu
+        onNavigateToMenu()
     } else {
         Column(Modifier.fillMaxWidth().padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -47,15 +50,15 @@ fun LoginScreen(
                 onValueChange = {it -> user = it},
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text))
 
-            TextField(value = password,
+            SecureTextField(state = password,
                 label = {Text("Contraseña")},
-                onValueChange = {it -> password = it},
+                textObfuscationMode = TextObfuscationMode.RevealLastTyped,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password))
 
             Button(onClick = {
-                viewModel.login(user, password)
+                viewModel.login(user, password.text as String)
                 if (!viewModel.loginError) {
-                    onNavigateToMenu
+                    onNavigateToMenu()
                 }
             }) {
                 Text("Iniciar Sesión")
