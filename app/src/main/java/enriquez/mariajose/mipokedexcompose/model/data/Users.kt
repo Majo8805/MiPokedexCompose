@@ -40,6 +40,14 @@ class Users(context: Context) {
         editor.apply()
     }
 
+    fun getCurrentUser(): User?{
+        val user = shared.getString(USER, null)
+        if (user != null){
+            getUserByEmail(user)
+        }
+        return null
+    }
+
     fun logout() {
         val editor = shared.edit()
         editor.putString(USER, null)

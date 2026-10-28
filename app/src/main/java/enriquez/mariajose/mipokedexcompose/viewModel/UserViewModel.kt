@@ -5,8 +5,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import enriquez.mariajose.mipokedexcompose.model.data.Users
+import enriquez.mariajose.mipokedexcompose.model.domain.User
 
 class UserViewModel(users: Users): ViewModel() {
+
+    var currentUser by mutableStateOf<User?>(null)
+    init {
+        currentUser = users.getCurrentUser()
+    }
     var loginError by mutableStateOf<Boolean>(false)
     var errorDescription by mutableStateOf<String>("")
 
