@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -41,27 +42,39 @@ fun LoginScreen(
     if (viewModel.isLoggedIn()) {
         onNavigateToMenu()
     } else {
-        Column(Modifier.fillMaxWidth().padding(innerPadding),
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center) {
+            verticalArrangement = Arrangement.Center
+        ) {
+            Column(
+                modifier = Modifier.fillMaxWidth(0.85f),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                TextField(
+                    modifier = Modifier.padding(bottom = 10.dp),
+                    value = user,
+                    label = {Text("Correo Electronico")},
+                    onValueChange = {it -> user = it},
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text))
 
-            TextField(value = user,
-                label = {Text("Correo Electronico")},
-                onValueChange = {it -> user = it},
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text))
+                SecureTextField(state = password,
+                    label = {Text("Contraseña")},
+                    textObfuscationMode = TextObfuscationMode.RevealLastTyped,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password))
 
-            SecureTextField(state = password,
-                label = {Text("Contraseña")},
-                textObfuscationMode = TextObfuscationMode.RevealLastTyped,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password))
-
-            Button(onClick = {
-                viewModel.login(user, password.text as String)
-                if (!viewModel.loginError) {
-                    onNavigateToMenu()
+                Button(
+                    modifier = Modifier.padding(top = 16.dp),
+                    onClick = {
+                    viewModel.login(user, password.text as String)
+                    if (!viewModel.loginError) {
+                        onNavigateToMenu()
+                    }
+                }) {
+                    Text("Iniciar Sesión")
                 }
-            }) {
-                Text("Iniciar Sesión")
             }
 
             Spacer(Modifier.size(40.dp))

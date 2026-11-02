@@ -19,18 +19,27 @@ class UserViewModel(users: Users): ViewModel() {
     val users = users
 
     fun login(user: String, password: String) {
-        val user = users.loginService(user, password)
-        if (user == null){
+        val loggedUser = users.loginService(user, password)
+        if (loggedUser == null){
             loginError = true
             errorDescription = "Usuario o contraseña incorrectos."
+            currentUser = null
         } else {
             loginError = false
             errorDescription = ""
-            users.saveUser(user.email, user.name)
+            currentUser = loggedUser
+            users.saveUser(loggedUser.email, loggedUser.name)
         }
     }
 
+    fun logout() {
+        users.logout()
+        currentUser = null
+        loginError = false
+        errorDescription = ""
+    }
+
     fun isLoggedIn(): Boolean {
-        return users.isLoggedIn()
+        return currentUser != null || users.isLoggedIn()
     }
 }

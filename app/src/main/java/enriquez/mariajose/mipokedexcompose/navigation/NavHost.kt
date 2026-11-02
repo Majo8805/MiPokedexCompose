@@ -21,7 +21,12 @@ fun MyApp(innerPadding: PaddingValues, userViewModel: UserViewModel) {
     val navController = rememberNavController()
     val onNavigateToDetail ={id: Int -> navController.navigate(route = PokemonDetail(id))}
     val onNavigateToMenu = {navController.navigate(PokemonList)}
-
+    val onLogout = {
+        userViewModel.logout()
+        navController.navigate(Login) {
+            popUpTo(0) { inclusive = true }
+        }
+    }
 
     NavHost(navController, startDestination = Login){
         composable<Login> {
@@ -29,10 +34,13 @@ fun MyApp(innerPadding: PaddingValues, userViewModel: UserViewModel) {
         }
 
         composable<PokemonList>{
-            MenuPokedexScreen(innerPadding, onNavigateToDetail = onNavigateToDetail,
-                onNavigateToHunt =
-                    {navController.navigate(route = PokemonHunt)
-                })
+            MenuPokedexScreen(
+                innerPadding,
+                onNavigateToDetail = onNavigateToDetail,
+                onNavigateToHunt = { navController.navigate(route = PokemonHunt) },
+                users = userViewModel.users,
+                onLogout = onLogout
+            )
         }
         composable<PokemonDetail>() { backStackEntry ->
             val pokemonDetail = backStackEntry.toRoute<PokemonDetail>()
