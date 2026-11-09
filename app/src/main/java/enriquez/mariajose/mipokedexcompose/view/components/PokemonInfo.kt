@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -31,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import enriquez.mariajose.mipokedexcompose.R
 import enriquez.mariajose.mipokedexcompose.model.data.absol
 import enriquez.mariajose.mipokedexcompose.model.domain.Pokemon
@@ -40,9 +42,10 @@ import enriquez.mariajose.mipokedexcompose.ui.theme.Pink
 import enriquez.mariajose.mipokedexcompose.ui.theme.Red
 import enriquez.mariajose.mipokedexcompose.ui.theme.White
 import enriquez.mariajose.mipokedexcompose.utilities.getColorByType
+import enriquez.mariajose.mipokedexcompose.viewModel.PokemonDetailViewModel
 
 @Composable
-fun CuadroBlanco(pokemon: Pokemon) {
+fun CuadroBlanco(pokemon: Pokemon, pokemonDetailViewModel: PokemonDetailViewModel = viewModel()) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = White
@@ -127,6 +130,13 @@ fun CuadroBlanco(pokemon: Pokemon) {
                 modifier = Modifier
                     .padding(top = 20.dp, start = 10.dp, end = 10.dp)
             )
+            Button({
+                pokemonDetailViewModel.saveCompanion(pokemon)
+            },
+                modifier = Modifier.padding(top = 20.dp)
+            ) {
+                Text("Seleccionar compañero")
+            }
             Spacer(modifier = Modifier.weight(1f))
             Row(
                 modifier = Modifier

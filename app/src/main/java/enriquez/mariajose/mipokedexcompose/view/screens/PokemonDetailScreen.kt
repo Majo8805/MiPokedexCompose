@@ -82,9 +82,7 @@ fun PokemonDetailScreen(innerPadding: PaddingValues, pokemon: Pokemon, colors: P
                 .size(260.dp),
             Alignment.Center
         )
-        Button({pokemonDetailViewModel.saveCompanion(pokemon)}) {
-            Text("Seleccionar compañero")
-        }
+
     }
 }
 
