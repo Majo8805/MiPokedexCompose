@@ -14,13 +14,16 @@ import enriquez.mariajose.mipokedexcompose.view.screens.LoginScreen
 import enriquez.mariajose.mipokedexcompose.view.screens.MenuPokedexScreen
 import enriquez.mariajose.mipokedexcompose.view.screens.PokemonDetailScreen
 import enriquez.mariajose.mipokedexcompose.view.screens.PokemonHuntScreen
+import enriquez.mariajose.mipokedexcompose.view.screens.ProfileScreen
+import enriquez.mariajose.mipokedexcompose.viewModel.PokemonDetailViewModel
 import enriquez.mariajose.mipokedexcompose.viewModel.UserViewModel
 
 @Composable
-fun MyApp(innerPadding: PaddingValues, userViewModel: UserViewModel) {
+fun MyApp(innerPadding: PaddingValues, userViewModel: UserViewModel, pokemonDetailViewModel: PokemonDetailViewModel) {
     val navController = rememberNavController()
     val onNavigateToDetail ={id: Int -> navController.navigate(route = PokemonDetail(id))}
     val onNavigateToMenu = {navController.navigate(PokemonList)}
+    val onNavigateToProfile = {navController.navigate(Profile)}
     val onLogout = {
         userViewModel.logout()
         navController.navigate(Login) {
@@ -38,6 +41,7 @@ fun MyApp(innerPadding: PaddingValues, userViewModel: UserViewModel) {
                 innerPadding,
                 onNavigateToDetail = onNavigateToDetail,
                 onNavigateToHunt = { navController.navigate(route = PokemonHunt) },
+                onNavigateToProfile = onNavigateToProfile,
                 users = userViewModel.users,
                 onLogout = onLogout
             )
@@ -47,10 +51,14 @@ fun MyApp(innerPadding: PaddingValues, userViewModel: UserViewModel) {
             val idPokemon = pokemonDetail.pokemon
             val pokemon = getPokemonByNumber(idPokemon)
             val pokemonColors = getColorByType(pokemon.type)
-            PokemonDetailScreen(innerPadding, getPokemonByNumber(idPokemon), pokemonColors)
+            PokemonDetailScreen(innerPadding, getPokemonByNumber(idPokemon), pokemonColors, pokemonDetailViewModel)
         }
         composable<PokemonHunt> {
             PokemonHuntScreen(innerPadding, onNavigateToDetail = onNavigateToDetail)
+        }
+
+        composable<Profile> {
+            ProfileScreen(innerPadding, userViewModel)
         }
     }
 }

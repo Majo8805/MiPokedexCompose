@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import enriquez.mariajose.mipokedexcompose.R
 import enriquez.mariajose.mipokedexcompose.model.data.absol
 import enriquez.mariajose.mipokedexcompose.model.domain.Pokemon
@@ -28,11 +30,11 @@ import enriquez.mariajose.mipokedexcompose.ui.theme.LightBlue
 import enriquez.mariajose.mipokedexcompose.ui.theme.White
 import enriquez.mariajose.mipokedexcompose.utilities.getColorByType
 import enriquez.mariajose.mipokedexcompose.view.components.CuadroBlanco
+import enriquez.mariajose.mipokedexcompose.viewModel.PokemonDetailViewModel
 
 @Composable
-fun PokemonDetailScreen(innerPadding: PaddingValues, pokemon: Pokemon, colors: Pair<Color, Color>) {
+fun PokemonDetailScreen(innerPadding: PaddingValues, pokemon: Pokemon, colors: Pair<Color, Color>, pokemonDetailViewModel: PokemonDetailViewModel = viewModel()) {
     Box(
-
         modifier = Modifier
             .fillMaxSize()
             .background(color = colors.first)
@@ -80,6 +82,9 @@ fun PokemonDetailScreen(innerPadding: PaddingValues, pokemon: Pokemon, colors: P
                 .size(260.dp),
             Alignment.Center
         )
+        Button({pokemonDetailViewModel.saveCompanion(pokemon)}) {
+            Text("Seleccionar compañero")
+        }
     }
 }
 

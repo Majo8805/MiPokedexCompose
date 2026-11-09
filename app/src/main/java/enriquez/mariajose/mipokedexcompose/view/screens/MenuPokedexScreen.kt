@@ -1,5 +1,6 @@
 package enriquez.mariajose.mipokedexcompose.view.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -51,6 +53,7 @@ fun MenuPokedexScreen(
     innerPadding: PaddingValues,
     onNavigateToDetail: (id: Int) -> Unit,
     onNavigateToHunt: () -> Unit,
+    onNavigateToProfile: () -> Unit,
     users: Users? = null,
     onLogout: () -> Unit = {}
 ) {
@@ -62,6 +65,10 @@ fun MenuPokedexScreen(
             .padding(innerPadding)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
+            IconButton({onNavigateToProfile()}) {
+                Image(painterResource(R.drawable.ic_profile), contentDescription = "icProfile")
+            }
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -174,5 +181,5 @@ fun MenuPokedexScreen(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun MenuPokedexScreenPreview() {
-    MenuPokedexScreen(PaddingValues(10.dp, 15.dp), {}, onNavigateToHunt = {})
+    MenuPokedexScreen(PaddingValues(10.dp, 15.dp), {}, {}, {})
 }

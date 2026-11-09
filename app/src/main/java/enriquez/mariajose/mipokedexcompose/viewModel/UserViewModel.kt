@@ -4,10 +4,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.viewModelScope
+import enriquez.mariajose.mipokedexcompose.model.data.CompanionPreferences
 import enriquez.mariajose.mipokedexcompose.model.data.Users
+import enriquez.mariajose.mipokedexcompose.model.data.absol
+import enriquez.mariajose.mipokedexcompose.model.domain.Pokemon
 import enriquez.mariajose.mipokedexcompose.model.domain.User
+import enriquez.mariajose.mipokedexcompose.model.preferences.PokemonSerializer
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 
-class UserViewModel(users: Users): ViewModel() {
+class UserViewModel(users: Users,
+    private val companionDataStore: CompanionPreferences
+    ): ViewModel() {
 
     var currentUser by mutableStateOf<User?>(null)
     init {
@@ -17,6 +28,13 @@ class UserViewModel(users: Users): ViewModel() {
     var errorDescription by mutableStateOf<String>("")
 
     val users = users
+
+    val companion: StateFlow<Pokemon> = companionDataStore.pokemonCompanion()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = PokemonSerializer.defaultValue
+    )
 
     fun login(user: String, password: String) {
         val loggedUser = users.loginService(user, password)
