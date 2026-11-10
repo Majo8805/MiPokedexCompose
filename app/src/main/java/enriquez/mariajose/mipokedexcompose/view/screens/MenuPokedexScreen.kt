@@ -65,10 +65,19 @@ fun MenuPokedexScreen(
             .padding(innerPadding)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            IconButton({onNavigateToProfile()}) {
-                Image(painterResource(R.drawable.ic_profile), contentDescription = "icProfile")
-            }
-
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 16.dp, top = 8.dp),
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    IconButton(onClick = onNavigateToProfile) {
+                        Image(
+                            painter = painterResource(R.drawable.ic_profile),
+                            contentDescription = "Perfil"
+                        )
+                    }
+                }
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically

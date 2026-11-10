@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import enriquez.mariajose.mipokedexcompose.model.domain.Pokemon
 import enriquez.mariajose.mipokedexcompose.model.preferences.PokemonSerializer
+import java.time.LocalDate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -20,8 +21,14 @@ val Context.dataStore: DataStore<Pokemon> by dataStore(
 
 class CompanionPreferences(private val context: Context) {
     suspend fun saveCompanion(companion: Pokemon) {
-        context.dataStore.updateData {
-            pokemon -> companion
+        context.dataStore.updateData { current ->
+            companion.copy(
+                companionSince = if (current.number == companion.number) {
+                    current.companionSince
+                } else {
+                    LocalDate.now().toString()
+                }
+            )
         }
     }
     fun pokemonCompanion(): Flow<Pokemon> = context.dataStore.data.map {

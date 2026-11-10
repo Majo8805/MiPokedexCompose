@@ -9,31 +9,33 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import enriquez.mariajose.mipokedexcompose.R
+import enriquez.mariajose.mipokedexcompose.model.data.CompanionPreferences
 import enriquez.mariajose.mipokedexcompose.model.data.absol
-import enriquez.mariajose.mipokedexcompose.model.domain.Pokemon
-import enriquez.mariajose.mipokedexcompose.navigation.PokemonDetail
 import enriquez.mariajose.mipokedexcompose.ui.theme.Grey
-import enriquez.mariajose.mipokedexcompose.ui.theme.LightBlue
-import enriquez.mariajose.mipokedexcompose.ui.theme.White
 import enriquez.mariajose.mipokedexcompose.utilities.getColorByType
 import enriquez.mariajose.mipokedexcompose.view.components.CuadroBlanco
 import enriquez.mariajose.mipokedexcompose.viewModel.PokemonDetailViewModel
 
 @Composable
-fun PokemonDetailScreen(innerPadding: PaddingValues, pokemon: Pokemon, colors: Pair<Color, Color>, pokemonDetailViewModel: PokemonDetailViewModel = viewModel()) {
+fun PokemonDetailScreen(
+    innerPadding: PaddingValues,
+    pokemonNumber: Int,
+    pokemonDetailViewModel: PokemonDetailViewModel
+) {
+    val pokemon = pokemonDetailViewModel.getPokemon(pokemonNumber)
+    val colors = getColorByType(pokemon.type)
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -73,7 +75,7 @@ fun PokemonDetailScreen(innerPadding: PaddingValues, pokemon: Pokemon, colors: P
                 .offset(x = 200.dp, y = 65.dp)
                 .size(230.dp)
         )
-        CuadroBlanco(pokemon)
+        CuadroBlanco(pokemon, pokemonDetailViewModel)
         Image(
             painterResource(pokemon.image), contentDescription = "${pokemon.name} image",
             modifier = Modifier
@@ -89,5 +91,6 @@ fun PokemonDetailScreen(innerPadding: PaddingValues, pokemon: Pokemon, colors: P
 @Preview(showBackground = true)
 @Composable
 fun PokemonDetailScreenPreview() {
-    PokemonDetailScreen(PaddingValues(10.dp, 15.dp), absol, getColorByType(absol.type))
+    val viewModel = PokemonDetailViewModel(CompanionPreferences(LocalContext.current))
+    PokemonDetailScreen(PaddingValues(10.dp, 15.dp), absol.number, viewModel)
 }

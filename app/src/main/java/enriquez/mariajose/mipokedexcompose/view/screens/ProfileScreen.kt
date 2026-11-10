@@ -18,6 +18,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 import enriquez.mariajose.mipokedexcompose.R
 import enriquez.mariajose.mipokedexcompose.ui.theme.Pink40
 import enriquez.mariajose.mipokedexcompose.ui.theme.Typography
@@ -51,6 +53,13 @@ fun ProfileScreen(innerPadding: PaddingValues, userViewModel: UserViewModel = vi
         Text("Mi compañero,", style = Typography.titleLarge, color = Pink40)
         Image(painter = painterResource(pokemon.image), contentDescription = "pokemonImage")
         Text(pokemon.name, style = Typography.labelMedium, fontStyle = FontStyle.Italic)
+        if (pokemon.companionSince.isNotEmpty()) {
+            val days = ChronoUnit.DAYS.between(
+                LocalDate.parse(pokemon.companionSince),
+                LocalDate.now()
+            )
+            Text("Tiene $days ${if (days == 1L) "día" else "días"} de ser tu compañero")
+        }
     }
 }
 

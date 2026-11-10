@@ -15,12 +15,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,6 +49,8 @@ import enriquez.mariajose.mipokedexcompose.viewModel.PokemonDetailViewModel
 
 @Composable
 fun CuadroBlanco(pokemon: Pokemon, pokemonDetailViewModel: PokemonDetailViewModel = viewModel()) {
+    val companion = pokemonDetailViewModel.companion.collectAsState().value
+
     Card(
         colors = CardDefaults.cardColors(
             containerColor = White
@@ -58,7 +63,8 @@ fun CuadroBlanco(pokemon: Pokemon, pokemonDetailViewModel: PokemonDetailViewMode
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = 20.dp, top = 80.dp),
+                .verticalScroll(rememberScrollState())
+                .padding(bottom = 12.dp, top = 60.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Tipo(pokemon, getColorByType(pokemon.type))
@@ -130,14 +136,26 @@ fun CuadroBlanco(pokemon: Pokemon, pokemonDetailViewModel: PokemonDetailViewMode
                 modifier = Modifier
                     .padding(top = 20.dp, start = 10.dp, end = 10.dp)
             )
-            Button({
-                pokemonDetailViewModel.saveCompanion(pokemon)
-            },
-                modifier = Modifier.padding(top = 20.dp)
-            ) {
-                Text("Seleccionar compañero")
+            if (companion.number == pokemon.number) {
+                Text(
+                    text = "⭐Es tu compañero",
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            } else {
+                Button(
+                    onClick = { pokemonDetailViewModel.saveCompanion(pokemon) },
+                    modifier = Modifier.padding(top = 20.dp)
+                ) {
+                    Text("Seleccionar compañero")
+                }
             }
-            Spacer(modifier = Modifier.weight(1f))
+            if (pokemonDetailViewModel.selectedCompanionNumber == pokemon.number) {
+                Text(
+                    text = "Compañero seleccionado",
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
+            Spacer(modifier = Modifier.size(16.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -184,7 +202,7 @@ fun PokemonAnterior() {
             painter = painterResource(id = R.drawable.brionne),
             contentDescription = "brionne",
             modifier = Modifier
-                .size(150.dp)
+                .size(140.dp)
 
         )
         Row(
@@ -210,7 +228,7 @@ fun PokemonSiguiente() {
             painter = painterResource(id = R.drawable.pikipek),
             contentDescription = "pikipek",
             modifier = Modifier
-                .size(150.dp)
+                .size(140.dp)
 
         )
         Row(

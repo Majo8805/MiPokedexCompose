@@ -12,5 +12,6 @@ data class Pokemon(
     val weight: Float,
     val favorite: Boolean,
     val ability: String,
-    val image: Int
+    val image: Int,
+    val companionSince: String = ""
 )
