@@ -43,6 +43,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import enriquez.mariajose.mipokedexcompose.model.data.CompanionPreferences
 import enriquez.mariajose.mipokedexcompose.model.data.Users
+import enriquez.mariajose.mipokedexcompose.model.data.sqllite.DatabaseHelper
+import enriquez.mariajose.mipokedexcompose.model.data.sqllite.PokemonDAO
+import enriquez.mariajose.mipokedexcompose.model.data.sqllite.PokemonSQLRepository
 import enriquez.mariajose.mipokedexcompose.model.domain.User
 import enriquez.mariajose.mipokedexcompose.model.preferences.ARCHIVO
 import enriquez.mariajose.mipokedexcompose.navigation.MyApp
@@ -54,6 +57,7 @@ import enriquez.mariajose.mipokedexcompose.ui.theme.Pink
 import enriquez.mariajose.mipokedexcompose.ui.theme.Red
 import enriquez.mariajose.mipokedexcompose.ui.theme.White
 import enriquez.mariajose.mipokedexcompose.view.screens.LoginScreen
+import enriquez.mariajose.mipokedexcompose.viewModel.AddPokemonViewModel
 import enriquez.mariajose.mipokedexcompose.viewModel.PokemonDetailViewModel
 import enriquez.mariajose.mipokedexcompose.viewModel.UserViewModel
 import java.nio.file.WatchEvent
@@ -65,11 +69,14 @@ class MainActivity : ComponentActivity() {
         val companionPreferences = CompanionPreferences(this)
         val usersViewModel = UserViewModel(users, companionPreferences)
         val pokemonDetailViewModel = PokemonDetailViewModel(companionPreferences)
+        val pokemonDAO = PokemonDAO(DatabaseHelper(this))
+        val pokemonRepository = PokemonSQLRepository(pokemonDAO)
+        val addPokemonViewModel = AddPokemonViewModel(pokemonRepository)
         enableEdgeToEdge()
         setContent {
             MiPokedexComposeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MyApp(innerPadding, usersViewModel, pokemonDetailViewModel)
+                    MyApp(innerPadding, usersViewModel, pokemonDetailViewModel, addPokemonViewModel)
                 }
             }
         }

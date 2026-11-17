@@ -6,20 +6,23 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import enriquez.mariajose.mipokedexcompose.view.screens.AddPokemonScreen
 import enriquez.mariajose.mipokedexcompose.view.screens.LoginScreen
 import enriquez.mariajose.mipokedexcompose.view.screens.MenuPokedexScreen
 import enriquez.mariajose.mipokedexcompose.view.screens.PokemonDetailScreen
 import enriquez.mariajose.mipokedexcompose.view.screens.PokemonHuntScreen
 import enriquez.mariajose.mipokedexcompose.view.screens.ProfileScreen
+import enriquez.mariajose.mipokedexcompose.viewModel.AddPokemonViewModel
 import enriquez.mariajose.mipokedexcompose.viewModel.PokemonDetailViewModel
 import enriquez.mariajose.mipokedexcompose.viewModel.UserViewModel
 
 @Composable
-fun MyApp(innerPadding: PaddingValues, userViewModel: UserViewModel, pokemonDetailViewModel: PokemonDetailViewModel) {
+fun MyApp(innerPadding: PaddingValues, userViewModel: UserViewModel, pokemonDetailViewModel: PokemonDetailViewModel, addPokemonViewModel: AddPokemonViewModel) {
     val navController = rememberNavController()
     val onNavigateToDetail ={id: Int -> navController.navigate(route = PokemonDetail(id))}
     val onNavigateToMenu = {navController.navigate(PokemonList)}
     val onNavigateToProfile = {navController.navigate(Profile)}
+    val onNavigateToAddPokemon = {navController.navigate(AddPokemon)}
     val onLogout = {
         userViewModel.logout()
         navController.navigate(Login) {
@@ -37,6 +40,7 @@ fun MyApp(innerPadding: PaddingValues, userViewModel: UserViewModel, pokemonDeta
                 innerPadding,
                 onNavigateToDetail = onNavigateToDetail,
                 onNavigateToHunt = { navController.navigate(route = PokemonHunt) },
+                onNavigateToAddPokemon = onNavigateToAddPokemon,
                 onNavigateToProfile = onNavigateToProfile,
                 users = userViewModel.users,
                 onLogout = onLogout
@@ -52,6 +56,9 @@ fun MyApp(innerPadding: PaddingValues, userViewModel: UserViewModel, pokemonDeta
 
         composable<Profile> {
             ProfileScreen(innerPadding, userViewModel)
+        }
+        composable<AddPokemon> {
+            AddPokemonScreen(innerPadding, addPokemonViewModel)
         }
     }
 }

@@ -18,3 +18,6 @@ object Login
 
 @Serializable
 object Profile
+
+@Serializable
+object AddPokemon

@@ -16,6 +16,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.res.painterResource
@@ -55,7 +58,8 @@ fun MenuPokedexScreen(
     onNavigateToHunt: () -> Unit,
     onNavigateToProfile: () -> Unit,
     users: Users? = null,
-    onLogout: () -> Unit = {}
+    onLogout: () -> Unit = {},
+    onNavigateToAddPokemon: () -> Unit
 ) {
     var grid by remember { mutableStateOf(users?.getPokemonDisplay() ?: false) }
 
@@ -69,13 +73,19 @@ fun MenuPokedexScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(end = 16.dp, top = 8.dp),
-                    horizontalArrangement = Arrangement.Start
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     IconButton(onClick = onNavigateToProfile) {
                         Image(
                             painter = painterResource(R.drawable.ic_profile),
                             contentDescription = "Perfil"
                         )
+                    }
+                    Button(onClick = { onNavigateToAddPokemon() },
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(8.dp))
+                    ) {
+                        Text("+")
                     }
                 }
             Row(
@@ -190,5 +200,5 @@ fun MenuPokedexScreen(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun MenuPokedexScreenPreview() {
-    MenuPokedexScreen(PaddingValues(10.dp, 15.dp), {}, {}, {})
+    MenuPokedexScreen(PaddingValues(10.dp, 15.dp), {}, {}, {}) {}
 }
