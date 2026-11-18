@@ -15,5 +15,7 @@ object Contract {
         const val COLUMN_NAME_FAVORITE = "favorite"
         const val COLUMN_NAME_ABILITY = "ability"
         const val COLUMN_NAME_IMAGE = "image"
+
+
     }
 }

@@ -2,6 +2,10 @@ package enriquez.mariajose.mipokedexcompose.model.data.sqllite
 
 import android.content.ContentValues
 import android.database.Cursor
+import androidx.core.database.getFloatOrNull
+import androidx.core.database.getIntOrNull
+import androidx.core.database.getStringOrNull
+import enriquez.mariajose.mipokedexcompose.R
 import enriquez.mariajose.mipokedexcompose.model.domain.Pokemon
 
 class PokemonMapper {
@@ -10,24 +14,23 @@ class PokemonMapper {
         val num = cursor.getInt(cursor.getColumnIndexOrThrow(Contract.Pokemons.COLUMN_NAME_NUMBER))
         val type = cursor.getString(cursor.getColumnIndexOrThrow(Contract.Pokemons.COLUMN_NAME_TYPE))
         val description = cursor.getString(cursor.getColumnIndexOrThrow(Contract.Pokemons.COLUMN_NAME_DESCRIPTION))
-        val height = cursor.getFloat(cursor.getColumnIndexOrThrow(Contract.Pokemons.COLUMN_NAME_HEIGHT))
-        val weight = cursor.getFloat(cursor.getColumnIndexOrThrow(Contract.Pokemons.COLUMN_NAME_WEIGHT))
-        val favorite = cursor.getInt(
-            cursor.getColumnIndexOrThrow(Contract.Pokemons.COLUMN_NAME_FAVORITE)
-        ) != 0
-        val ability = cursor.getString(cursor.getColumnIndexOrThrow(Contract.Pokemons.COLUMN_NAME_ABILITY))
-        val image = cursor.getInt(cursor.getColumnIndexOrThrow(Contract.Pokemons.COLUMN_NAME_IMAGE))
+        val height = cursor.getFloatOrNull(cursor.getColumnIndexOrThrow(Contract.Pokemons.COLUMN_NAME_HEIGHT))
+        val weight = cursor.getFloatOrNull(cursor.getColumnIndexOrThrow(Contract.Pokemons.COLUMN_NAME_WEIGHT))
+        val favorite = cursor.getIntOrNull(cursor.getColumnIndexOrThrow(Contract.Pokemons.COLUMN_NAME_FAVORITE))
+        val ability = cursor.getStringOrNull(cursor.getColumnIndexOrThrow(Contract.Pokemons.COLUMN_NAME_ABILITY))
+        val image = cursor.getBlob(cursor.getColumnIndexOrThrow(Contract.Pokemons.COLUMN_NAME_IMAGE))
 
         return Pokemon(
             name = name,
             number = num,
             type = type,
             description = description,
-            height = height,
-            weight = weight,
-            favorite = favorite,
-            ability = ability,
-            image = image
+            height = height ?: 0F,
+            weight = weight ?: 0F,
+            favorite = if (favorite==null || favorite == 0) false else true,
+            ability = ability ?: "",
+            image = R.drawable.wtp,
+            sqlImage = image
         )
 
     }

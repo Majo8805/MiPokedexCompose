@@ -13,12 +13,7 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
                     ${Contract.Pokemons.COLUMN_NAME_NUMBER} INTEGER NOT NULL,
                     ${Contract.Pokemons.COLUMN_NAME_NAME} TEXT NOT NULL,
                     ${Contract.Pokemons.COLUMN_NAME_DESCRIPTION} TEXT NOT NULL,
-                    ${Contract.Pokemons.COLUMN_NAME_TYPE} TEXT NOT NULL,
-                    ${Contract.Pokemons.COLUMN_NAME_HEIGHT} REAL NOT NULL DEFAULT 0,
-                    ${Contract.Pokemons.COLUMN_NAME_WEIGHT} REAL NOT NULL DEFAULT 0,
-                    ${Contract.Pokemons.COLUMN_NAME_FAVORITE} INTEGER NOT NULL DEFAULT 0,
-                    ${Contract.Pokemons.COLUMN_NAME_ABILITY} TEXT NOT NULL DEFAULT '',
-                    ${Contract.Pokemons.COLUMN_NAME_IMAGE} INTEGER NOT NULL DEFAULT -1
+                    ${Contract.Pokemons.COLUMN_NAME_TYPE} TEXT NOT NULL
                 )
             """.trimIndent()
         )
@@ -32,36 +27,24 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         if (db == null) return
 
         if (oldVersion < 2) {
-            val columns = db.rawQuery(
-                "PRAGMA table_info(${Contract.Pokemons.TABLE_NAME})",
-                null
-            ).use { cursor ->
-                buildSet {
-                    val nameColumn = cursor.getColumnIndexOrThrow("name")
-                    while (cursor.moveToNext()) {
-                        add(cursor.getString(nameColumn))
-                    }
-                }
-            }
-
-            if (columns.isEmpty()) {
-                onCreate(db)
-            } else {
-                val newColumns = listOf(
-                    Contract.Pokemons.COLUMN_NAME_HEIGHT to "REAL NOT NULL DEFAULT 0",
-                    Contract.Pokemons.COLUMN_NAME_WEIGHT to "REAL NOT NULL DEFAULT 0",
-                    Contract.Pokemons.COLUMN_NAME_FAVORITE to "INTEGER NOT NULL DEFAULT 0",
-                    Contract.Pokemons.COLUMN_NAME_ABILITY to "TEXT NOT NULL DEFAULT ''",
-                    Contract.Pokemons.COLUMN_NAME_IMAGE to "INTEGER NOT NULL DEFAULT -1"
-                )
-                newColumns.forEach { (column, definition) ->
-                    if (column !in columns) {
-                        db.execSQL(
-                            "ALTER TABLE ${Contract.Pokemons.TABLE_NAME} ADD COLUMN $column $definition"
-                        )
-                    }
-                }
-            }
+            val addColumnAbility = "ALTER TABLE ${Contract.Pokemons.TABLE_NAME} " +
+                    "ADD COLUMN ${Contract.Pokemons.COLUMN_NAME_ABILITY} TEXT"
+            val addColumnFavorite = "ALTER TABLE ${Contract.Pokemons.TABLE_NAME} " +
+                    "ADD COLUMN ${Contract.Pokemons.COLUMN_NAME_FAVORITE} BOOLEAN"
+            val addColumnHeight = "ALTER TABLE ${Contract.Pokemons.TABLE_NAME} " +
+                    "ADD COLUMN ${Contract.Pokemons.COLUMN_NAME_HEIGHT} REAL"
+            val addColumnWeight = "ALTER TABLE ${Contract.Pokemons.TABLE_NAME} " +
+                    "ADD COLUMN ${Contract.Pokemons.COLUMN_NAME_WEIGHT} REAL"
+            val addColumnImage = "ALTER TABLE ${Contract.Pokemons.TABLE_NAME} " +
+                    "ADD COLUMN ${Contract.Pokemons.COLUMN_NAME_IMAGE} BLOB"
+            db?.beginTransaction()
+            db?.execSQL(addColumnAbility)
+            db?.execSQL(addColumnFavorite)
+            db?.execSQL(addColumnHeight)
+            db?.execSQL(addColumnWeight)
+            db?.execSQL(addColumnImage)
+            db?.setTransactionSuccessful()
+            db?.endTransaction()
         }
     }
 

@@ -3,6 +3,7 @@ package enriquez.mariajose.mipokedexcompose.view.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,6 +19,7 @@ import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -38,13 +41,14 @@ import enriquez.mariajose.mipokedexcompose.viewModel.AddPokemonViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddPokemonScreen(innerPadding: PaddingValues, addPokemonViewModel: AddPokemonViewModel) {
-    var number by remember { mutableStateOf("") }
-    var name by remember { mutableStateOf("") }
-    var type by remember { mutableStateOf(pokemonTypes[0]) }
-    var description by remember { mutableStateOf("") }
-    var height by remember { mutableStateOf("") }
-    var weight by remember { mutableStateOf("") }
-    var ability by remember { mutableStateOf("") }
+    var number = remember { TextFieldState() }
+    var name = remember { TextFieldState() }
+    var type = remember { TextFieldState(pokemonTypes[0]) }
+    var description = remember { TextFieldState() }
+    var height = remember { TextFieldState() }
+    var weight = remember { TextFieldState() }
+    var ability = remember { TextFieldState() }
+    var favorite by remember { mutableStateOf(false) }
     var openType by remember { mutableStateOf(false) }
     val pokemonList by addPokemonViewModel.pokemons.collectAsStateWithLifecycle()
 
@@ -119,7 +123,7 @@ fun AddPokemonScreen(innerPadding: PaddingValues, addPokemonViewModel: AddPokemo
             label = {
                 Text("Altura")
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
         TextField(
             value = weight,
@@ -127,7 +131,7 @@ fun AddPokemonScreen(innerPadding: PaddingValues, addPokemonViewModel: AddPokemo
             label = {
                 Text("Peso")
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
         TextField(
             value = ability,
@@ -136,6 +140,11 @@ fun AddPokemonScreen(innerPadding: PaddingValues, addPokemonViewModel: AddPokemo
                 Text("Habilidad")
             }
         )
+        Row() {
+            Text("Favorito:")
+            Switch(favorite, {favorite = it})
+        }
+
         Button(onClick = {
             addPokemonViewModel.savePokemon(
                 name.toString(),

@@ -1,9 +1,11 @@
 package enriquez.mariajose.mipokedexcompose.model.domain
 
+import android.media.Image
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Pokemon(
+    val id: Int = -1,
     val name: String,
     val number: Int,
     val  type: String,
@@ -13,5 +15,6 @@ data class Pokemon(
     val favorite: Boolean,
     val ability: String,
     val image: Int,
+    val sqlImage: ByteArray? = null,
     val companionSince: String = ""
 )
